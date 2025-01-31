@@ -66,3 +66,49 @@ it('can retrieve the second page of movies', function () {
     expect($responseData['meta']['from'])->toBe(11);
     expect($responseData['meta']['to'])->toBe(15);
 });
+
+it('can filter movies by genre and release date', function () {
+    // Arrange: Maak testfilms aan in de database
+    Movie::factory()->create(['title' => 'Action Movie', 'genre' => 'action', 'release_year' => 2023]);
+    Movie::factory()->create(['title' => 'Drama Movie', 'genre' => 'drama', 'release_year' => 2022]);
+    Movie::factory()->create(['title' => 'Sci-Fi Movie', 'genre' => 'sci-fi', 'release_year' => 2023]);
+
+    // Act: Voer een GET-aanroep uit met filters
+    $response = $this->getJson('/api/movies?genre=action&release_year=2023');
+
+    // Assert: Controleer of de gefilterde films correct worden geretourneerd
+    $response->assertStatus(200)
+        ->assertJsonCount(1, 'data') // Er is maar één film met dit genre en releasejaar
+        ->assertJsonFragment([
+            'title' => 'Action Movie',
+            'genre' => 'action',
+            'release_year' => 2023,
+        ]);
+});
+
+it('can filter movies by genre, release year, min rating, and max rating', function () {
+    // Arrange: Maak testfilms aan in de database met verschillende ratings
+    Movie::factory()->create(['title' => 'Action Movie Low', 'genre' => 'action', 'release_year' => 2023, 'rating' => 5]);
+    Movie::factory()->create(['title' => 'Action Movie High', 'genre' => 'action', 'release_year' => 2023, 'rating' => 8]);
+    Movie::factory()->create(['title' => 'Drama Movie', 'genre' => 'drama', 'release_year' => 2022, 'rating' => 7]);
+    Movie::factory()->create(['title' => 'Sci-Fi Movie', 'genre' => 'sci-fi', 'release_year' => 2023, 'rating' => 9]);
+
+    // Act: Voer een GET-aanroep uit met filters
+    $response = $this->getJson('/api/movies?genre=action&release_year=2023&min_rating=6&max_rating=8');
+
+    // Assert: Controleer of alleen de juiste gefilterde film(s) worden geretourneerd
+    $response->assertStatus(200)
+        ->assertJsonCount(1, 'data') // Er is maar één film die voldoet aan alle filters
+        ->assertJsonFragment([
+            'title' => 'Action Movie High',
+            'genre' => 'action',
+            'release_year' => 2023,
+            'rating' => 8,
+        ])
+        ->assertJsonMissing([
+            'title' => 'Action Movie Low', // Deze heeft een te lage rating (5)
+        ])
+        ->assertJsonMissing([
+            'title' => 'Sci-Fi Movie', // Deze heeft een te hoge rating (9)
+        ]);
+});

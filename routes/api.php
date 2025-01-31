@@ -1,4 +1,4 @@
 <?php
 
 // movies resource
-Route::resource('movies', \App\Http\Controllers\Movies::class)->only(['index']);
+Route::resource('movies', \App\Http\Controllers\MoviesController::class)->only(['index']);

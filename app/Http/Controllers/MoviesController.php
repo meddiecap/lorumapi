@@ -6,14 +6,19 @@ use App\Http\Resources\MovieCollection;
 use App\Models\Movie;
 use Illuminate\Http\Request;
 
-class Movies extends Controller
+class MoviesController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
     public function index(Request $request): MovieCollection
     {
-        return new MovieCollection(Movie::paginate($request->input('per_page', 10)));
+        $filters = $request->only(['genre', 'release_year', 'min_rating', 'max_rating']);
+
+        // Pas filters toe
+        $movies = Movie::filter($filters)->paginate($request->input('per_page', 10));
+
+        return new MovieCollection($movies);
     }
 
     /**
