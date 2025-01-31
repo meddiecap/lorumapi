@@ -1,4 +1,6 @@
 <?php
+
+use App\Models\Genre;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use App\Models\Movie;
 
@@ -75,43 +77,54 @@ it('can retrieve the second page of movies', function () {
 });
 
 it('can filter movies by genre and release date', function () {
-    // Arrange: Create test movies in the database with different genres and release years
-    Movie::factory()->create(['title' => 'Action Movie', 'genre' => 'action', 'release_year' => 2023]);
-    Movie::factory()->create(['title' => 'Drama Movie', 'genre' => 'drama', 'release_year' => 2022]);
-    Movie::factory()->create(['title' => 'Sci-Fi Movie', 'genre' => 'sci-fi', 'release_year' => 2023]);
+    // Arrange: Create test genres
+    $actionGenre = Genre::factory()->create(['name' => 'Action']);
+    $dramaGenre = Genre::factory()->create(['name' => 'Drama']);
+    $sciFiGenre = Genre::factory()->create(['name' => 'Sci-Fi']);
 
-    // Act:
-    $response = $this->getJson('/api/movies?genre=action&release_year=2023');
+    // Create movies and associate them with genres
+    Movie::factory()->create(['title' => 'Action Movie', 'genre_id' => $actionGenre->id, 'release_year' => 2023]);
+    Movie::factory()->create(['title' => 'Drama Movie', 'genre_id' => $dramaGenre->id, 'release_year' => 2022]);
+    Movie::factory()->create(['title' => 'Sci-Fi Movie', 'genre_id' => $sciFiGenre->id, 'release_year' => 2023]);
 
-    // Assert: Controleer of de gefilterde films correct worden geretourneerd
+    // Act: Filter movies by genre and release year
+    $response = $this->getJson('/api/movies?genre=Action&release_year=2023');
+
+    // Assert: Ensure only the correct movie is returned
     $response->assertStatus(200)
-        ->assertJsonCount(1, 'data') // Er is maar één film met dit genre en releasejaar
+        ->assertJsonCount(1, 'data') // Only one movie matches the filters
         ->assertJsonFragment([
             'title' => 'Action Movie',
-            'genre' => 'action',
             'release_year' => 2023,
-        ]);
+        ])
+        ->assertJsonPath('data.0.genre.name', 'Action') // Ensure correct genre association
+        ->assertJsonMissing(['genre' => ['created_at', 'updated_at']]); // Ensure only name and id are returned for the genre
 });
 
 it('can filter movies by genre, release year, min rating, and max rating', function () {
+    // Arrange: Create genres
+    $actionGenre = Genre::factory()->create(['name' => 'Action']);
+    $dramaGenre = Genre::factory()->create(['name' => 'Drama']);
+    $sciFiGenre = Genre::factory()->create(['name' => 'Sci-Fi']);
+
     // Arrange: Maak testfilms aan in de database met verschillende ratings
-    Movie::factory()->create(['title' => 'Action Movie Low', 'genre' => 'action', 'release_year' => 2023, 'rating' => 5]);
-    Movie::factory()->create(['title' => 'Action Movie High', 'genre' => 'action', 'release_year' => 2023, 'rating' => 8]);
-    Movie::factory()->create(['title' => 'Drama Movie', 'genre' => 'drama', 'release_year' => 2022, 'rating' => 7]);
-    Movie::factory()->create(['title' => 'Sci-Fi Movie', 'genre' => 'sci-fi', 'release_year' => 2023, 'rating' => 9]);
+    Movie::factory()->create(['title' => 'Action Movie Low', 'genre_id' => $actionGenre->id, 'release_year' => 2023, 'rating' => 5]);
+    Movie::factory()->create(['title' => 'Action Movie High', 'genre_id' => $actionGenre->id, 'release_year' => 2023, 'rating' => 8]);
+    Movie::factory()->create(['title' => 'Drama Movie', 'genre_id' => $dramaGenre->id, 'release_year' => 2022, 'rating' => 7]);
+    Movie::factory()->create(['title' => 'Sci-Fi Movie', 'genre_id' => $sciFiGenre->id, 'release_year' => 2023, 'rating' => 9]);
 
     // Act: Make a GET request with multiple filters
-    $response = $this->getJson('/api/movies?genre=action&release_year=2023&min_rating=6&max_rating=8');
+    $response = $this->getJson('/api/movies?genre=Action&release_year=2023&min_rating=6&max_rating=8');
 
     // Assert: Check if the correct movie is returned and others are excluded
     $response->assertStatus(200)
         ->assertJsonCount(1, 'data') // There is only one movie that matches all criteria
         ->assertJsonFragment([
             'title' => 'Action Movie High',
-            'genre' => 'action',
             'release_year' => 2023,
             'rating' => 8,
         ])
+        ->assertJsonPath('data.0.genre.name', 'Action') // Ensure the correct genre is associated
         ->assertJsonMissing([
             'title' => 'Action Movie Low', // This one has a rating below the minimum
         ])
@@ -159,4 +172,15 @@ it('can sort movies by release year in ascending and descending order', function
         ->assertJsonPath('data.0.release_year', 2021)
         ->assertJsonPath('data.1.release_year', 2022)
         ->assertJsonPath('data.2.release_year', 2023);
+});
+
+it('ensures a movie is correctly associated with a genre', function () {
+    // Arrange: Create a genre and a movie
+    $genre = Genre::factory()->create(['name' => 'Thriller']);
+    $movie = Movie::factory()->create(['title' => 'Suspense Movie', 'genre_id' => $genre->id]);
+
+    // Assert: Check if the movie's genre relation is set correctly in the database
+    expect($movie->genre)->not->toBeNull();
+    expect($movie->genre->id)->toBe($genre->id);
+    expect($movie->genre->name)->toBe('Thriller');
 });

@@ -8,6 +8,8 @@ class GenreFilter
 {
     public function apply(Builder $query, $value): Builder
     {
-        return $query->where('genre', $value);
+        return $query->whereHas('genre', function ($query) use ($value) {
+            $query->where('name', $value);
+        });
     }
 }

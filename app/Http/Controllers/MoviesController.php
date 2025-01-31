@@ -20,6 +20,7 @@ class MoviesController extends Controller
             ->when($request->has('sort'), function ($query) use ($request) {
                 $query->orderBy($request->get('sort'), $request->get('order', 'asc'));
             })
+            ->with('genre')
             ->paginate($request->input('per_page', 10));
 
         return new MovieCollection($movies);

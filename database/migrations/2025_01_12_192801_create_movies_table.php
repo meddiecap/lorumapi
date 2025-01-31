@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('title');
             $table->text('description')->nullable();
-            $table->string('genre')->nullable();
+            $table->foreignId('genre_id')->constrained();
             $table->integer('release_year', false, true);
             $table->float('rating', 2)->nullable();
             $table->timestamps();
