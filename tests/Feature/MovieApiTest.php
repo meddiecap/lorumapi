@@ -4,6 +4,13 @@ use App\Models\Movie;
 
 uses(RefreshDatabase::class);
 
+it('returns empty when no movies exist', function () {
+    $response = $this->getJson('/api/movies');
+
+    $response->assertStatus(200)
+        ->assertJsonCount(0, 'data');
+});
+
 it('can retrieve a list of movies', function () {
     // Arrange: Create some movies in the database
     Movie::factory()->count(3)->create();
@@ -68,12 +75,12 @@ it('can retrieve the second page of movies', function () {
 });
 
 it('can filter movies by genre and release date', function () {
-    // Arrange: Maak testfilms aan in de database
+    // Arrange: Create test movies in the database with different genres and release years
     Movie::factory()->create(['title' => 'Action Movie', 'genre' => 'action', 'release_year' => 2023]);
     Movie::factory()->create(['title' => 'Drama Movie', 'genre' => 'drama', 'release_year' => 2022]);
     Movie::factory()->create(['title' => 'Sci-Fi Movie', 'genre' => 'sci-fi', 'release_year' => 2023]);
 
-    // Act: Voer een GET-aanroep uit met filters
+    // Act:
     $response = $this->getJson('/api/movies?genre=action&release_year=2023');
 
     // Assert: Controleer of de gefilterde films correct worden geretourneerd
@@ -93,12 +100,12 @@ it('can filter movies by genre, release year, min rating, and max rating', funct
     Movie::factory()->create(['title' => 'Drama Movie', 'genre' => 'drama', 'release_year' => 2022, 'rating' => 7]);
     Movie::factory()->create(['title' => 'Sci-Fi Movie', 'genre' => 'sci-fi', 'release_year' => 2023, 'rating' => 9]);
 
-    // Act: Voer een GET-aanroep uit met filters
+    // Act: Make a GET request with multiple filters
     $response = $this->getJson('/api/movies?genre=action&release_year=2023&min_rating=6&max_rating=8');
 
-    // Assert: Controleer of alleen de juiste gefilterde film(s) worden geretourneerd
+    // Assert: Check if the correct movie is returned and others are excluded
     $response->assertStatus(200)
-        ->assertJsonCount(1, 'data') // Er is maar één film die voldoet aan alle filters
+        ->assertJsonCount(1, 'data') // There is only one movie that matches all criteria
         ->assertJsonFragment([
             'title' => 'Action Movie High',
             'genre' => 'action',
@@ -106,9 +113,50 @@ it('can filter movies by genre, release year, min rating, and max rating', funct
             'rating' => 8,
         ])
         ->assertJsonMissing([
-            'title' => 'Action Movie Low', // Deze heeft een te lage rating (5)
+            'title' => 'Action Movie Low', // This one has a rating below the minimum
         ])
         ->assertJsonMissing([
-            'title' => 'Sci-Fi Movie', // Deze heeft een te hoge rating (9)
+            'title' => 'Sci-Fi Movie', // This one has a rating above the maximum
         ]);
+});
+
+it('returns validation error for invalid filter values', function () {
+    $response = $this->getJson('/api/movies?min_rating=-1');
+
+    $response->assertStatus(422)
+        ->assertJsonValidationErrors(['min_rating']);
+});
+
+it('can sort movies by release year in ascending and descending order', function () {
+    // Arrange: Create test movies with different release years
+    Movie::factory()->create(['title' => 'Movie 2021', 'release_year' => 2021]);
+    Movie::factory()->create(['title' => 'Movie 2022', 'release_year' => 2022]);
+    Movie::factory()->create(['title' => 'Movie 2023', 'release_year' => 2023]);
+
+    // Act: Perform a GET request for ascending order (asc)
+    $responseAsc = $this->getJson('/api/movies?sort=release_year&order=asc');
+
+    // Assert: Verify movies are sorted in ascending order (2021 -> 2022 -> 2023)
+    $responseAsc->assertStatus(200)
+        ->assertJsonPath('data.0.release_year', 2021)
+        ->assertJsonPath('data.1.release_year', 2022)
+        ->assertJsonPath('data.2.release_year', 2023);
+
+    // Act: Perform a GET request for descending order (desc)
+    $responseDesc = $this->getJson('/api/movies?sort=release_year&order=desc');
+
+    // Assert: Verify movies are sorted in descending order (2023 -> 2022 -> 2021)
+    $responseDesc->assertStatus(200)
+        ->assertJsonPath('data.0.release_year', 2023)
+        ->assertJsonPath('data.1.release_year', 2022)
+        ->assertJsonPath('data.2.release_year', 2021);
+
+    // Act: Perform a GET request for ascending order without specifying the order
+    $responseDesc = $this->getJson('/api/movies?sort=release_year');
+
+    // Assert: Verify movies are sorted in ascending order (2021 -> 2022 -> 2023)
+    $responseDesc->assertStatus(200)
+        ->assertJsonPath('data.0.release_year', 2021)
+        ->assertJsonPath('data.1.release_year', 2022)
+        ->assertJsonPath('data.2.release_year', 2023);
 });

@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Filters\MovieFilter;
+use App\Http\Requests\MovieFilterRequest;
 use App\Http\Resources\MovieCollection;
 use App\Models\Movie;
 use Illuminate\Http\Request;
@@ -11,12 +13,14 @@ class MoviesController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index(Request $request): MovieCollection
+    public function index(MovieFilterRequest $request, MovieFilter $filters): MovieCollection
     {
-        $filters = $request->only(['genre', 'release_year', 'min_rating', 'max_rating']);
-
         // Pas filters toe
-        $movies = Movie::filter($filters)->paginate($request->input('per_page', 10));
+        $movies = Movie::filter($filters->extract($request))
+            ->when($request->has('sort'), function ($query) use ($request) {
+                $query->orderBy($request->get('sort'), $request->get('order', 'asc'));
+            })
+            ->paginate($request->input('per_page', 10));
 
         return new MovieCollection($movies);
     }

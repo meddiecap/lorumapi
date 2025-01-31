@@ -2,6 +2,7 @@
 
 namespace App\Filters;
 
+use App\Http\Requests\MovieFilterRequest;
 use Illuminate\Database\Eloquent\Builder;
 
 class MovieFilter
@@ -13,6 +14,12 @@ class MovieFilter
         'max_rating' => MaxRatingFilter::class,
     ];
 
+    /**
+     * @param  Builder  $query
+     * @param  array  $filters
+     *
+     * @return Builder
+     */
     public function apply(Builder $query, array $filters): Builder
     {
         foreach ($filters as $key => $value) {
@@ -22,5 +29,13 @@ class MovieFilter
         }
 
         return $query;
+    }
+
+    /**
+     * Extract and return only allowed filters from the request.
+     */
+    public function extract(MovieFilterRequest $request): array
+    {
+        return $request->only(array_keys($this->filters));
     }
 }
