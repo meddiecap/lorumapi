@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Filters\MovieFilter;
 use App\Http\Requests\MovieFilterRequest;
+use App\Http\Requests\MovieRequest;
+use App\Http\Resources\Json\MovieResource;
 use App\Http\Resources\MovieCollection;
 use App\Models\Movie;
 use Illuminate\Http\Request;
@@ -27,19 +29,14 @@ class MoviesController extends Controller
     }
 
     /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(MovieRequest $request)
     {
-        //
+        // Create a movie
+        $movie = Movie::create($request->validated());
+
+        return new MovieResource($movie);
     }
 
     /**
@@ -47,23 +44,22 @@ class MoviesController extends Controller
      */
     public function show(string $id)
     {
-        //
-    }
+        // Get the movie
+        $movie = Movie::with('genre')->findOrFail($id);
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(string $id)
-    {
-        //
+        return new MovieResource($movie);
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(MovieRequest $request, string $id)
     {
-        //
+        // Update the movie
+        $movie = Movie::findOrFail($id);
+        $movie->update($request->validated());
+
+        return new MovieResource($movie);
     }
 
     /**
@@ -71,6 +67,10 @@ class MoviesController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        // Delete the movie
+        $movie = Movie::findOrFail($id);
+        $movie->delete();
+
+        return response()->noContent();
     }
 }

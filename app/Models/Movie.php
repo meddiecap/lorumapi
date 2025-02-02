@@ -13,6 +13,14 @@ class Movie extends Model
 
     protected $fillable = ['title', 'description', 'release_year', 'rating', 'genre_id'];
 
+    protected function casts()
+    {
+        return [
+            'release_year' => 'integer',
+            'rating' => 'float',
+        ];
+    }
+
     public function scopeFilter(Builder $query, array $filters): Builder
     {
         return (new MovieFilter)->apply($query, $filters);
