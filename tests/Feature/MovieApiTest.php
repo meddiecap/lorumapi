@@ -133,6 +133,32 @@ it('can filter movies by genre, release year, min rating, and max rating', funct
         ]);
 });
 
+it('can filter movies by different criteria', function ($filters, $expectedCount, $expectedTitle) {
+    // Arrange: Create genres
+    $actionGenre = Genre::factory()->create(['name' => 'Action']);
+    $dramaGenre = Genre::factory()->create(['name' => 'Drama']);
+
+    // Create movies with genres
+    Movie::factory()->create(['title' => 'Action Movie', 'genre_id' => $actionGenre->id, 'release_year' => 2023, 'rating' => 8]);
+    Movie::factory()->create(['title' => 'Drama Movie', 'genre_id' => $dramaGenre->id, 'release_year' => 2022, 'rating' => 7]);
+
+    // Act: Make a GET request with filters
+    $response = $this->getJson('/api/movies?' . http_build_query($filters));
+
+    // Assert: Check if the correct number of movies is returned
+    $response->assertStatus(200)
+        ->assertJsonCount($expectedCount, 'data');
+
+    if ($expectedTitle) {
+        $response->assertJsonPath('data.0.title', $expectedTitle);
+    }
+})->with([
+    [['genre' => 'Action'], 1, 'Action Movie'],
+    [['release_year' => 2022], 1, 'Drama Movie'],
+    [['min_rating' => 8], 1, 'Action Movie'],
+    [['max_rating' => 6], 0, null], // No movie should match
+]);
+
 it('returns validation error for invalid filter values', function () {
     $response = $this->getJson('/api/movies?min_rating=-1');
 
