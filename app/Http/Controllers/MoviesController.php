@@ -8,7 +8,6 @@ use App\Http\Requests\MovieRequest;
 use App\Http\Resources\Json\MovieResource;
 use App\Http\Resources\MovieCollection;
 use App\Models\Movie;
-use Illuminate\Http\Request;
 
 class MoviesController extends Controller
 {
