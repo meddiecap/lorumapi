@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Filters;
+namespace App\Filters\MovieFilters;
 
 use App\Http\Requests\MovieFilterRequest;
 use Illuminate\Database\Eloquent\Builder;
@@ -12,6 +12,7 @@ class MovieFilter
         'release_year' => ReleaseYearFilter::class,
         'min_rating' => MinRatingFilter::class,
         'max_rating' => MaxRatingFilter::class,
+        'updated_at' => UpdatedAtFilter::class,
     ];
 
     /**

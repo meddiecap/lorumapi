@@ -1,13 +1,13 @@
 <?php
 
-namespace App\Filters;
+namespace App\Filters\MovieFilters;
 
 use Illuminate\Database\Eloquent\Builder;
 
-class MaxRatingFilter
+class MinRatingFilter
 {
     public function apply(Builder $query, $value): Builder
     {
-        return $query->where('rating', '<=', $value);
+        return $query->where('rating', '>=', $value);
     }
 }

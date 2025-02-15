@@ -1,13 +1,13 @@
 <?php
 
-namespace App\Filters;
+namespace App\Filters\GenreFilters;
 
 use Illuminate\Database\Eloquent\Builder;
 
-class ReleaseYearFilter
+class NameFilter
 {
     public function apply(Builder $query, $value): Builder
     {
-        return $query->where('release_year', $value);
+        return $query->where('name', '=', $value);
     }
 }

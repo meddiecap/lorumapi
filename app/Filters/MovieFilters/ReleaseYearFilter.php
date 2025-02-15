@@ -1,13 +1,13 @@
 <?php
 
-namespace App\Filters;
+namespace App\Filters\MovieFilters;
 
 use Illuminate\Database\Eloquent\Builder;
 
-class MinRatingFilter
+class ReleaseYearFilter
 {
     public function apply(Builder $query, $value): Builder
     {
-        return $query->where('rating', '>=', $value);
+        return $query->where('release_year', $value);
     }
 }
