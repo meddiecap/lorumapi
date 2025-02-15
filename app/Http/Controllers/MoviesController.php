@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Filters\MovieFilter;
+use App\Filters\MovieFilters\MovieFilter;
 use App\Http\Requests\MovieFilterRequest;
 use App\Http\Requests\MovieRequest;
 use App\Http\Resources\Json\MovieResource;

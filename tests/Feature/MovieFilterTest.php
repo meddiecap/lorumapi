@@ -37,7 +37,7 @@ it('can filter movies by genre, release year, min rating, and max rating', funct
     $dramaGenre = Genre::factory()->create(['name' => 'Drama']);
     $sciFiGenre = Genre::factory()->create(['name' => 'Sci-Fi']);
 
-    // Arrange: Maak testfilms aan in de database met verschillende ratings
+    // Arrange: Create movies with genres, release years, and ratings
     Movie::factory()->create(['title' => 'Action Movie Low', 'genre_id' => $actionGenre->id, 'release_year' => 2023, 'rating' => 5]);
     Movie::factory()->create(['title' => 'Action Movie High', 'genre_id' => $actionGenre->id, 'release_year' => 2023, 'rating' => 8]);
     Movie::factory()->create(['title' => 'Drama Movie', 'genre_id' => $dramaGenre->id, 'release_year' => 2022, 'rating' => 7]);
@@ -140,4 +140,25 @@ it('ensures a movie is correctly associated with a genre', function () {
     expect($movie->genre)->not->toBeNull();
     expect($movie->genre->id)->toBe($genre->id);
     expect($movie->genre->name)->toBe('Thriller');
+});
+
+it('ensures a movie can be filtered by updated_at date', function () {
+    // Arrange: Create movies with different updated_at dates
+    $movie1 = Movie::factory()->create(['title' => 'Movie 1']);
+    $movie2 = Movie::factory()->create(['title' => 'Movie 2']);
+    $movie3 = Movie::factory()->create(['title' => 'Movie 3']);
+
+    // Update the first and last movie to have different updated_at dates
+    $movie1->updated_at = now()->subDays(2);
+    $movie1->save();
+    $movie3->updated_at = now()->subDays(1);
+    $movie3->save();
+
+    // Act: Filter movies by updated_at date
+    $response = $this->getJson('/api/movies?updated_at=' . $movie2->updated_at->toDateTimeString());
+
+    // Assert: Ensure only the correct movie is returned
+    $response->assertStatus(200)
+        ->assertJsonCount(1, 'data')
+        ->assertJsonPath('data.0.title', 'Movie 2');
 });

@@ -85,3 +85,18 @@ it('a movie can be deleted', function () {
     // Assert: Check if the movie no longer exists in the database
     $this->assertDatabaseMissing('movies', ['id' => $movie->id]);
 });
+
+it('a genre must exist', function () {
+    // Act: Make a POST request to create a movie with a non-existing genre
+    $response = $this->postJson('/api/movies', [
+        'title' => 'Test Movie',
+        'description' => 'This is a test movie',
+        'release_year' => 2023,
+        'rating' => 7.5,
+        'genre_id' => 999,
+    ]);
+
+    // Assert: Check if the request fails with a 422 Unprocessable Entity status
+    $response->assertStatus(422)
+        ->assertJsonValidationErrors('genre_id');
+});

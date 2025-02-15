@@ -2,10 +2,10 @@
 
 namespace App\Models;
 
+use App\Filters\MovieFilters\MovieFilter;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Builder;
-use App\Filters\MovieFilter;
 
 class Movie extends Model
 {
