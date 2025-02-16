@@ -39,3 +39,17 @@ it('can sort genres by name', function () {
         ->assertJsonPath('data.1.name', 'Drama')
         ->assertJsonPath('data.2.name', 'Action');
 });
+
+it('ignores non-existing filter keys', function () {
+    // Arrange: Create test genres
+    Genre::factory()->create(['name' => 'Action']);
+    Genre::factory()->create(['name' => 'Drama']);
+    Genre::factory()->create(['name' => 'Sci-Fi']);
+
+    // Act: Filter genres by a non-existing key
+    $response = $this->getJson('/api/genres?non_existing_key=Action');
+
+    // Assert: Ensure all genres are returned
+    $response->assertStatus(200)
+        ->assertJsonCount(3, 'data');
+});

@@ -162,3 +162,16 @@ it('ensures a movie can be filtered by updated_at date', function () {
         ->assertJsonCount(1, 'data')
         ->assertJsonPath('data.0.title', 'Movie 2');
 });
+
+it('ignores non-existing filter keys', function () {
+    // Arrange: Create a movie
+    Movie::factory()->create(['title' => 'Movie 1']);
+    Movie::factory()->create(['title' => 'Movie 2']);
+
+    // Act: Filter movies by a non-existing key
+    $response = $this->getJson('/api/movies?invalid_key=invalid_value');
+
+    // Assert: Ensure the request is successful and no filters are applied
+    $response->assertStatus(200)
+        ->assertJsonCount(2, 'data');
+});
