@@ -5,13 +5,9 @@ namespace App\Http\Controllers;
 use App\Filters\GenreFilters\GenreFilter;
 use App\Http\Requests\GenreFilterRequest;
 use App\Http\Requests\GenreRequest;
-use App\Http\Requests\MovieRequest;
 use App\Http\Resources\GenreCollection;
 use App\Http\Resources\Json\GenreResource;
-use App\Http\Resources\Json\MovieResource;
 use App\Models\Genre;
-use App\Models\Movie;
-use Illuminate\Http\Request;
 
 class GenreController extends Controller
 {

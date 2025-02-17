@@ -1,19 +1,15 @@
 <?php
 
-namespace App\Filters\MovieFilters;
+namespace App\Filters\DirectorFilters;
 
-use App\Http\Requests\MovieFilterRequest;
+use App\Http\Requests\DirectorFilterRequest;
 use Illuminate\Database\Eloquent\Builder;
 
-class MovieFilter
+class DirectorFilter
 {
     protected array $filters = [
-        'genre' => GenreFilter::class,
-        'director' => DirectorFilter::class,
-        'release_year' => ReleaseYearFilter::class,
-        'min_rating' => MinRatingFilter::class,
-        'max_rating' => MaxRatingFilter::class,
-        'updated_at' => UpdatedAtFilter::class,
+        'name' => NameFilter::class,
+        'has_movies' => HasMoviesFilter::class,
     ];
 
     /**
@@ -36,7 +32,7 @@ class MovieFilter
     /**
      * Extract and return only allowed filters from the request.
      */
-    public function extract(MovieFilterRequest $request): array
+    public function extract(DirectorFilterRequest $request): array
     {
         return $request->only(array_keys($this->filters));
     }

@@ -11,7 +11,7 @@ class Movie extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['title', 'description', 'release_year', 'rating', 'genre_id'];
+    protected $fillable = ['title', 'description', 'release_year', 'rating', 'genre_id', 'director_id'];
 
     protected function casts()
     {
@@ -29,5 +29,10 @@ class Movie extends Model
     public function genre()
     {
         return $this->belongsTo(Genre::class);
+    }
+
+    public function director()
+    {
+        return $this->belongsTo(Director::class);
     }
 }

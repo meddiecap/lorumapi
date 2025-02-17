@@ -1,6 +1,7 @@
 <?php
 
 use App\Models\Genre;
+use App\Models\Movie;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
 uses(RefreshDatabase::class);
@@ -57,4 +58,19 @@ it('can delete a genre', function () {
 
     // Assert: Check if the genre was deleted successfully
     $response->assertStatus(204);
+});
+
+it('deleting a genre does not delete associated movies', function () {
+    // Arrange: Create a genre and a movie
+    $genre = Genre::factory()->create();
+    $movie = Movie::factory()->create(['genre_id' => $genre->id]);
+
+    // Act: Make a DELETE request to delete the genre
+    $response = $this->deleteJson("/api/genres/{$genre->id}");
+
+    // Assert: Check if the genre was deleted successfully
+    $response->assertStatus(204);
+
+    // Check if the movie still exists
+    $this->assertDatabaseHas('movies', ['id' => $movie->id]);
 });

@@ -1,14 +1,16 @@
 <?php
 
 use App\Models\Genre;
+use App\Models\Director;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use App\Models\Movie;
 
 uses(RefreshDatabase::class);
 
 it('a movie can be created', function () {
-    // Arrange: Create a genre
+    // Arrange: Create a genre and a director
     $genre = Genre::factory()->create();
+    $director = Director::factory()->create();
 
     // Act: Make a POST request to create a movie
     $response = $this->postJson('/api/movies', [
@@ -17,6 +19,7 @@ it('a movie can be created', function () {
         'release_year' => 2023,
         'rating' => 7.5,
         'genre_id' => $genre->id,
+        'director_id' => $director->id,
     ]);
 
     // Assert: Check if the movie was created successfully
@@ -27,14 +30,16 @@ it('a movie can be created', function () {
             'release_year' => 2023,
             'rating' => 7.5,
         ])
-        ->assertJsonPath('data.genre.name', $genre->name);
+        ->assertJsonPath('data.genre.name', $genre->name)
+        ->assertJsonPath('data.director.name', $director->name);
 });
 
 it('a movie can be retrieved', function () {
     $genre = Genre::factory()->create();
+    $director = Director::factory()->create();
 
     // Arrange: Create a movie
-    $movie = Movie::factory()->create(['genre_id' => $genre->id]);
+    $movie = Movie::factory()->create(['genre_id' => $genre->id, 'director_id' => $director->id]);
 
     // Act: Make a GET request to retrieve the movie
     $response = $this->getJson("/api/movies/{$movie->id}");
@@ -47,12 +52,18 @@ it('a movie can be retrieved', function () {
             'release_year' => $movie->release_year,
             'rating' => $movie->rating,
         ])
-        ->assertJsonPath('data.genre.name', $genre->name);
+        ->assertJsonPath('data.genre.name', $genre->name)
+        ->assertJsonPath('data.director.name', $director->name);
 });
 
 it('a movie can be updated', function () {
     // Arrange: Create a movie
-    $movie = Movie::factory()->create();
+    $movie = Movie::factory()->create([
+        'title' => 'Test Movie',
+        'description' => 'This is a test movie',
+        'release_year' => 2023,
+        'rating' => 7.5,
+    ]);
 
     // Act: Make a PUT request to update the movie
     $response = $this->putJson("/api/movies/{$movie->id}", [
@@ -99,4 +110,19 @@ it('a genre must exist', function () {
     // Assert: Check if the request fails with a 422 Unprocessable Entity status
     $response->assertStatus(422)
         ->assertJsonValidationErrors('genre_id');
+});
+
+it('a director must exist', function () {
+    // Act: Make a POST request to create a movie with a non-existing director
+    $response = $this->postJson('/api/movies', [
+        'title' => 'Test Movie',
+        'description' => 'This is a test movie',
+        'release_year' => 2023,
+        'rating' => 7.5,
+        'director_id' => 999,
+    ]);
+
+    // Assert: Check if the request fails with a 422 Unprocessable Entity status
+    $response->assertStatus(422)
+        ->assertJsonValidationErrors('director_id');
 });

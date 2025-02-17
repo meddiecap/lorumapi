@@ -16,6 +16,7 @@ class MovieFilterRequest extends FormRequest
         return [
             'release_year' => 'integer',
             'genre' => 'string',
+            'director' => 'string',
             'min_rating' => [
                 'numeric',
                 'nullable',

@@ -1,10 +1,30 @@
 <?php
 
 use App\Models\Genre;
+use App\Models\Director;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use App\Models\Movie;
 
 uses(RefreshDatabase::class);
+
+it('can filter movies by director', function () {
+
+    $director = Director::factory()->create(['name' => 'Director 1']);
+
+    // Arrange: Create movies with different directors
+    Movie::factory()->create(['title' => 'Movie 1', 'director_id' => $director->id]);
+    Movie::factory()->create(['title' => 'Movie 2']);
+    Movie::factory()->create(['title' => 'Movie 3', 'director_id' => $director->id]);
+
+    // Act: Filter movies by director
+    $response = $this->getJson('/api/movies?director=Director 1');
+
+    // Assert: Ensure only the correct movies are returned
+    $response->assertStatus(200)
+        ->assertJsonCount(2, 'data') // Two movies have the same director
+        ->assertJsonFragment(['title' => 'Movie 1'])
+        ->assertJsonFragment(['title' => 'Movie 3']);
+});
 
 it('can filter movies by genre and release date', function () {
     // Arrange: Create test genres

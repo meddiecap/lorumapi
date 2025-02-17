@@ -21,6 +21,9 @@ class MovieRequest extends FormRequest
             'genre_id' => $this->routeIs('movies.update')
                 ? ['nullable', 'integer', 'exists:genres,id']
                 : ['required', 'integer', 'exists:genres,id'],
+            'director_id' => $this->routeIs('movies.update')
+                ? ['nullable', 'integer', 'exists:directors,id']
+                : ['required', 'integer', 'exists:directors,id'],
         ];
     }
 }

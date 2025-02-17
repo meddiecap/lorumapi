@@ -21,7 +21,7 @@ class MoviesController extends Controller
             ->when($request->has('sort'), function ($query) use ($request) {
                 $query->orderBy($request->get('sort'), $request->get('order', 'asc'));
             })
-            ->with('genre')
+            ->with('genre', 'director')
             ->paginate($request->input('per_page', 10));
 
         return new MovieCollection($movies);
@@ -44,7 +44,7 @@ class MoviesController extends Controller
     public function show(string $id)
     {
         // Get the movie
-        $movie = Movie::with('genre')->findOrFail($id);
+        $movie = Movie::with('genre', 'director')->findOrFail($id);
 
         return new MovieResource($movie);
     }
