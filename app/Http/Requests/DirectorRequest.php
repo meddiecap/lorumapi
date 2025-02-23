@@ -20,6 +20,14 @@ class DirectorRequest extends FormRequest
                 'max:255',
                 'unique:directors,name',
             ],
+            /**
+             * The date_of_birth field is optional, but if it is provided, it must be a valid date.
+             * @example "1970-01-01"
+             */
+            'date_of_birth' => [
+                'nullable',
+                'date',
+            ],
         ];
     }
 }
