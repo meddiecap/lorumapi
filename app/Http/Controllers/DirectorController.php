@@ -12,7 +12,13 @@ use App\Models\Director;
 class DirectorController extends Controller
 {
     /**
-     * Display a listing of the resource.
+     * List Directors
+     *
+     * Returns a paginated list of directors. \
+     * The list can be filtered by name and date of birth. \
+     * E.g. /api/directors?name=Quentin&date_of_birth=1963-03-27 \
+     * The list can be sorted by any column. \
+     * E.g. /api/directors?sort=name&order=desc
      */
     public function index(DirectorFilterRequest $request, DirectorFilter $filters): DirectorCollection
     {
@@ -26,7 +32,7 @@ class DirectorController extends Controller
     }
 
     /**
-     * Store a newly created resource in storage.
+     * Create director
      */
     public function store(DirectorRequest $request)
     {
@@ -37,7 +43,7 @@ class DirectorController extends Controller
     }
 
     /**
-     * Display the specified resource.
+     * Get a single director
      */
     public function show(string $id)
     {
@@ -48,7 +54,7 @@ class DirectorController extends Controller
     }
 
     /**
-     * Update the specified resource in storage.
+     * Update the specified director
      */
     public function update(DirectorRequest $request, string $id)
     {
@@ -60,7 +66,7 @@ class DirectorController extends Controller
     }
 
     /**
-     * Remove the specified resource from storage.
+     * Delete the specified director
      */
     public function destroy(string $id)
     {
