@@ -15,7 +15,7 @@
     </div>
 
     <div class="p-4 bg-white dark:bg-gray-800">
-        <div class="text-sm text-gray-600 dark:text-gray-400 mb-4">{!! \Illuminate\Support\Str::markdown($description) !!}</div>
+        <div class="text-sm text-gray-600 dark:text-gray-400 mb-4">{!! Str::markdown($description) !!}</div>
 
         @if(count($parameters) > 0)
             <div class="mb-4">
@@ -35,7 +35,7 @@
                                 <tr>
                                     <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-gray-100">{{ $param['name'] }}</td>
                                     <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-400">{{ is_array($param['type']) ? implode('|', $param['type']) : $param['type'] }}</td>
-                                    <td class="px-6 py-4 text-sm text-gray-500 dark:text-gray-400">{!! \Illuminate\Support\Str::markdown($param['description']) !!}</td>
+                                    <td class="px-6 py-4 text-sm text-gray-500 dark:text-gray-400">{!! Str::markdown($param['description']) !!}</td>
                                     <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-400">
                                         @if($param['required'] ?? false)
                                             <span class="text-green-500 dark:text-green-400">Yes</span>
