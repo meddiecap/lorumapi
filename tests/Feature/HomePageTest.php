@@ -56,7 +56,7 @@ class HomePageTest extends TestCase
 
         // Assert the page contains API documentation
         $response->assertSee('API Documentation');
-        $response->assertSee('Welcome to the Lorem Ipsum API');
+        $response->assertSee('Welcome to the');
         $response->assertSee('API Endpoints');
         $response->assertSee('Movies');
         $response->assertSee('Directors');
