@@ -1,25 +1,58 @@
 <p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+# Lorem Ipsum API
 
-## About Laravel
+A RESTful API that provides dummy data for movies, directors, and genres. This API is designed to help developers test their applications with realistic data.
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+## Getting Started with DDEV
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+This project uses [DDEV](https://ddev.readthedocs.io/) for local development. DDEV provides a consistent development environment using Docker containers.
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+### Prerequisites
+
+- [Docker](https://www.docker.com/products/docker-desktop)
+- [DDEV](https://ddev.readthedocs.io/en/stable/users/install/)
+
+### Setup Instructions
+
+1. Clone this repository
+2. Navigate to the project directory
+3. Start DDEV:
+   ```
+   ddev start
+   ```
+4. Install dependencies:
+   ```
+   ddev composer install
+   ddev npm install
+   ```
+5. Copy the environment file:
+   ```
+   ddev exec cp .env.example .env
+   ```
+6. Generate application key:
+   ```
+   ddev exec php artisan key:generate
+   ```
+7. Run migrations:
+   ```
+   ddev exec php artisan migrate
+   ```
+8. Seed the database:
+   ```
+   ddev exec php artisan db:seed
+   ```
+
+### Accessing the Application
+
+- Web: https://lorumapi.ddev.site
+- API: https://lorumapi.ddev.site/api
+
+### Vite Assets
+
+This project uses Laravel Vite for asset compilation. When running with DDEV, Vite is automatically started and the assets are served from the correct URL.
+
+The project is configured to use HTTPS for all assets, including Vite assets, to avoid CORS issues. The Vite server is exposed on port 5174 for HTTPS access, and the HMR (Hot Module Replacement) is configured to use the DDEV hostname instead of localhost.
 
 ## Learning Laravel
 
