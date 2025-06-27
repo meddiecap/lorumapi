@@ -17,9 +17,17 @@ use Illuminate\Http\Request;
 class HomeController extends Controller
 {
     /**
-     * Display the homepage with API documentation.
+     * Display the homepage.
      */
-    public function index(Request $request): View
+    public function index(): View
+    {
+        return view('home');
+    }
+
+    /**
+     * Display the API documentation page.
+     */
+    public function documentation(Request $request): View
     {
         // Get sample data for API examples
         $movie = Movie::with(['director', 'genre'])->first();
@@ -32,7 +40,7 @@ class HomeController extends Controller
         $genreResource = new GenreResource($genre);
         $directorsCollection = new DirectorCollection(Director::paginate(3));
 
-        return view('home', [
+        return view('documentation', [
             'movieResource' => json_encode($movieResource->toArray($request), JSON_PRETTY_PRINT),
             'directorResource' => json_encode($directorResource->toArray($request), JSON_PRETTY_PRINT),
             'genreResource' => json_encode($genreResource->toArray($request), JSON_PRETTY_PRINT),
