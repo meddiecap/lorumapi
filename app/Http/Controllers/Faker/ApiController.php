@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\Faker;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\FakerApiRequest;
+use App\Http\Resources\Faker\AddressResource;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Faker\Factory as Faker;
@@ -26,11 +28,11 @@ class ApiController extends Controller
      * Handle the incoming request to return a Faker resource.
      * This method dynamically loads the requested resource class and returns the generated data.
      *
-     * @param Request $request
+     * @param FakerApiRequest $request
      * @param string $resource The name of the resource to be returned.
      * @return JsonResponse
      */
-    public function index(Request $request, string $resource): JsonResponse
+    public function index(FakerApiRequest $request, string $resource): JsonResponse
     {
         // Convert the resource name to singular and studly case
         $resource = Str::of($resource)->singular()->studly();
@@ -68,19 +70,20 @@ class ApiController extends Controller
      * Return a JSON response with the generated data.
      * This method uses the provided resource class to generate the data based on the request parameters.
      *
-     * @param Request $request
+     * @param FakerApiRequest $request
      * @param string $resource
      * @return JsonResponse
      */
-    protected function returnResponse(Request $request, string $resource): JsonResponse
+    protected function returnResponse(FakerApiRequest $request, string $resource): JsonResponse
     {
+//        dd((new AddressResource($request, $faker, $params, $i + 1))->resolve());
         $results = [];
 
         $params = $this->getParams($request);
-        $faker = Faker::create($params->language);
-        if($params->seed) $faker->seed($params->seed);
+        $faker = Faker::create($params['locale']);
+        if($params['seed']) $faker->seed($params['seed']);
 
-        for ($i=0; $i < $params->quantity; $i++) {
+        for ($i=0; $i < $params['quantity']; $i++) {
             $results[] = (new $resource($request, $faker, $params, $i + 1))->resolve();
         }
 
@@ -88,6 +91,7 @@ class ApiController extends Controller
             ->json([
                 'status' => 'OK',
                 'code' => 200,
+                'params' => $params,
                 'total' => count($results),
                 'data' => $results
             ]);
@@ -98,22 +102,18 @@ class ApiController extends Controller
      * This method limits the quantity to a maximum defined in the config
      * and retrieves the locale and seed from the request.
      *
-     * @param Request $request
-     * @return object
+     * @param FakerApiRequest $request
+     * @return array
      */
-    protected function getParams(Request $request): object
+    protected function getParams(FakerApiRequest $request): array
     {
-        // Limit the quantity to a maximum defined in the config
-        $q = min(
-            $request->get('_quantity', 10),
-            config('api.response_limit_number', 1000)
-        );
+        $validated = $request->validated();
 
-        return (object)[
-            'quantity' => $q,
-            'language' => $request->get('_locale', 'en_US'),
-            'seed' => $request->get('_seed')
-        ];
+        $validated['quantity'] = $validated['quantity'] ?? config('faker.quantity', 10);
+        $validated['locale'] = $validated['locale'] ?? config('faker.locale', 'en_US');
+        $validated['seed'] = $validated['seed'] ?? null;
+
+        return $validated;
     }
 
     /**

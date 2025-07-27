@@ -15,14 +15,11 @@ class ImageResource extends BaseResource
      */
     public function toArray(Request $request): array
     {
-        $width = (@$request->_width && $request->_width != '') ? $request->_width : null;
-        $height = (@$request->_height && $request->_height != '') ? $request->_height : null;
-
         // Use a random name as a seed for image generation
         $imageTitle = $this->faker->text(30);
 
-        $x = $width ?? '640';
-        $y = $height ?? '480';
+        $x = $request->get('width', 640);
+        $y = $request->get('height', 480);
         $url = 'https://picsum.photos/seed/' . Str::slug($imageTitle) . '/' . $x . '/' . $y;
 
         return [

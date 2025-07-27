@@ -5,3 +5,4 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', [HomeController::class, 'index'])->name('home');
 Route::get('/documentation', [HomeController::class, 'documentation'])->name('documentation');
+Route::get('/faker', [HomeController::class, 'faker'])->name('faker');

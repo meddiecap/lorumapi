@@ -15,10 +15,10 @@ class ProductResource extends BaseResource
      */
     public function toArray(Request $request): array
     {
-        $priceMin = $request->get('_price_min', 0.01);
-        $priceMax = $request->get('_price_max');
-        $taxes = $request->get('_taxes', 10);
-        $categories_type = $request->get('_categories_type', 'integer'); // string, integer, uuid
+        $priceMin = $this->params["price_min"] ?? 0.01;
+        $priceMax = $this->params["price_min"] ?? null;
+        $taxes = $this->params["taxes"] ?? 10;
+        $categories_type = $this->params["categories_type"] ?? 'integer'; // string, integer, uuid
 
         $netPrice = $this->faker->randomFloat(2, $priceMin, $priceMax);
         $price = $netPrice * (1 + ($taxes / 100));

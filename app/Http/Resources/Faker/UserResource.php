@@ -17,7 +17,7 @@ class UserResource extends BaseResource
      */
     public function toArray(Request $request): array
     {
-        $gender = $request->get('_gender', $this->genders[array_rand($this->genders)]);
+        $gender = $this->params["gender"] ?? $this->genders[array_rand($this->genders)];
 
         $firstName = $this->faker->firstName($gender);
         $lastName = $this->faker->lastName();

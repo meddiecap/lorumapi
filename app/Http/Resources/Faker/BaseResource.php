@@ -8,11 +8,11 @@ use Illuminate\Http\Resources\Json\JsonResource;
 
 abstract class BaseResource extends JsonResource
 {
-    protected $faker;
+    protected FakerGenerator $faker;
 
-    protected $params;
+    protected mixed $params;
 
-    protected $counter = 0;
+    protected mixed $counter = 0;
 
     public function __construct(Request $request, FakerGenerator $faker, $params = null, $counter = 0)
     {

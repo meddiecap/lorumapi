@@ -14,7 +14,7 @@ class TextResource extends BaseResource
      */
     public function toArray(Request $request): array
     {
-        $characters = $request->get('_characters', 200);
+        $characters = $this->params['characters'] ?? 200;
 
         return [
             'title'         => $this->faker->realText(20),

@@ -17,10 +17,10 @@ class PersonResource extends BaseResource
      */
     public function toArray(Request $request): array
     {
-        $gender = $request->get("_gender", $this->genders[array_rand($this->genders)]);
+        $gender = $this->params["gender"] ?? $this->genders[array_rand($this->genders)];
 
-        $birthdayStart = $request->get("_birthday_start", '-90 years');
-        $birthdayEnd = $request->get("_birthday_end", 'now');
+        $birthdayStart = $this->params["birthday_start"] ?? '-90 years';
+        $birthdayEnd = $this->params["birthday_end"] ?? 'now';
 
         $firstname = $this->faker->firstName($gender);
         $lastname = $this->faker->lastName();
