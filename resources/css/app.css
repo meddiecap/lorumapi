@@ -1,3 +1,53 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import "tailwindcss";
+@import "highlight.js/styles/github.css";
+
+@plugin '@tailwindcss/typography';
+
+@source '../../vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php';
+@source '../../storage/framework/views/*.php';
+@source '../**/*.blade.php';
+@source '../**/*.js';
+
+/**
+ * Custom variables
+ */
+:root {
+    --tw-prose-code-ring: theme('colors.zinc.300');
+    --tw-prose-code: theme('colors.zinc.900');
+    --tw-prose-code-bg: theme('colors.zinc.100');
+    --text-xs--line-height: 1.5rem;
+}
+
+code.hljs-inline-block {
+    display: inline-block;
+    color:var(--tw-prose-code);
+    box-shadow: inset 0 0 0 1px var(--tw-prose-code-ring);
+    background-color: var(--tw-prose-code-bg);
+    border-radius: .5rem;
+    padding: .20rem .375rem;
+    font-size: .75rem
+}
+
+div[data-code-block] label:has(input[name="language"]:checked) {
+    @apply border-b border-emerald-500;
+}
+div[data-code-block] label:has(input[name="language"]) {
+    @apply border-0;
+
+}
+
+div[data-code-block]:has(input[name="language"][value="curl"]:checked) pre[data-language="curl"],
+div[data-code-block]:has(input[name="language"][value="bash"]:checked) pre[data-language="bash"],
+div[data-code-block]:has(input[name="language"][value="js"]:checked) pre[data-language="js"],
+div[data-code-block]:has(input[name="language"][value="javascript"]:checked) pre[data-language="javascript"],
+div[data-code-block]:has(input[name="language"][value="php"]:checked) pre[data-language="php"]{
+    display: block;
+}
+
+div[data-code-block] pre[data-language="curl"],
+div[data-code-block] pre[data-language="bash"],
+div[data-code-block] pre[data-language="js"],
+div[data-code-block] pre[data-language="javascript"],
+div[data-code-block] pre[data-language="php"] {
+    display: none;
+}

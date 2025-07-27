@@ -3,7 +3,7 @@
 @section('content')
 <x-hero-header
     title="Lorem Ipsum API"
-    subtitle="A powerful, developer-friendly RESTful API for testing and prototyping applications with realistic movie data"
+    subtitle="A powerful, developer-friendly RESTful API for testing and prototyping applications with realistic data."
     backgroundImage="https://images.unsplash.com/photo-1489599849927-2ee91cede3ba?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80">
     <div class="flex flex-col space-y-4 sm:flex-row sm:space-y-0 sm:space-x-4">
         <a href="{{ route('documentation') }}" class="inline-flex items-center px-6 py-3 border border-transparent text-base font-medium rounded-md shadow-sm text-white bg-indigo-500 hover:bg-indigo-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
@@ -17,7 +17,7 @@
 
 <x-usp-section
     title="Why Use Our API?"
-    subtitle="Lorem Ipsum API provides everything you need to build and test your applications with realistic movie data">
+    subtitle="Lorem Ipsum API provides everything you need to build and test your applications with realistic data.">
     <x-usp-item
         icon="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
         title="Easy to Use"

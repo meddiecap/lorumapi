@@ -1,12 +1,28 @@
-@props(['language' => 'json', 'title' => null])
+@props(['snippets', 'title' => null])
 
-<div {{ $attributes->merge(['class' => 'overflow-hidden bg-white dark:bg-gray-800 shadow-sm sm:rounded-lg mb-6']) }}>
-    @if($title)
-        <div class="px-4 py-3 bg-gray-50 dark:bg-gray-700 border-b border-gray-200 dark:border-gray-600">
-            <h3 class="text-sm font-medium text-gray-700 dark:text-gray-300">{{ $title }}</h3>
+<div data-code-block {{ $attributes->merge(['class' => 'overflow-hidden bg-white dark:bg-gray-800 shadow-sm sm:rounded-lg mb-6']) }}>
+    <div class="flex min-h-[calc(--spacing(12)+1px)] flex-wrap justify-between gap-x-4 border-b border-gray-200 bg-gray-50 dark:bg-gray-500 px-4 dark:border-gray-600">
+        @if($title)
+            <div class="py-3">
+                <h3 class="font-medium text-gray-700 dark:text-gray-300">{{ $title }}</h3>
+            </div>
+        @endif
+
+        <div class="-mb-px flex gap-4 text-xs font-medium" role="tablist" aria-orientation="horizontal">
+            @foreach($snippets as $snippet)
+                <label
+                    class="border-b py-3 transition text-emerald-400"
+                    id="headlessui-tabs-tab-{{ $snippet['type'] }}" role="tab" type="button" tabindex="0"
+                    aria-controls="headlessui-tabs-panel-{{ $snippet['type'] }}">{{ $snippet['title'] }}
+                    <input class="hidden" type="radio" name="language" value="{{ $snippet['type'] }}" {{ $loop->first ? 'checked' : '' }}>
+                </label>
+            @endforeach
         </div>
-    @endif
-    <div class="p-1 bg-gray-800 dark:bg-gray-900 overflow-x-auto">
-        <pre class="language-{{ $language }} p-4 text-sm text-white overflow-auto"><code>{{ $slot }}</code></pre>
+    </div>
+
+    <div class="p-1 overflow-x-auto text-xs leading-4">
+        @foreach($snippets as $snippet)
+            <pre data-language="{{ $snippet['type'] }}" class="language-{{ $snippet['type'] === 'curl' ? 'bash' : $snippet['type'] }}"><code>{{ $snippet['code'] }}</code></pre>
+        @endforeach
     </div>
 </div>
