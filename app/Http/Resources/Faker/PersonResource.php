@@ -7,6 +7,22 @@ use Illuminate\Support\Str;
 
 class PersonResource extends BaseResource
 {
+    /**
+     * A description of the resource used for the documentation page of this resource.
+     *
+     * @return string
+     */
+    public static function description(): string
+    {
+        return 'Generates random personal information including name, email, phone number, birthday';
+    }
+
+    public static function longDescription(): string
+    {
+        return 'This resource generates random personal data using Faker. It includes fields such as first name, last name,
+        email, phone number, birthday';
+    }
+
     protected $genders = ['male', 'female', 'other'];
 
     /**

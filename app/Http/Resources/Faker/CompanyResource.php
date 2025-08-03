@@ -8,6 +8,26 @@ use Illuminate\Support\Str;
 class CompanyResource extends BaseResource
 {
     /**
+     * A description of the resource used for the documentation page of this resource.
+     *
+     * @return string
+     */
+    public static function description(): string
+    {
+        return '
+            Generates random companies with name, email, VAT number, phone number, country, addresses, website, image URL,
+            address and contact person.';
+    }
+
+    public static function longDescription(): string
+    {
+        return '
+            This resource generates random company data using Faker. It includes fields such as name, email, VAT number,
+            phone number, country, addresses, website, image URL, and contact person. The image URL is generated based on
+            the company name to ensure uniqueness.';
+    }
+
+    /**
      * Transform the resource into an array.
      *
      * @param Request $request

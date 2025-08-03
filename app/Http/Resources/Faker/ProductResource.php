@@ -8,6 +8,24 @@ use Illuminate\Support\Str;
 class ProductResource extends BaseResource
 {
     /**
+     * A description of the resource used for the documentation page of this resource.
+     *
+     * @return string
+     */
+    public static function description(): string
+    {
+        return 'Generates random products with name, description, EAN, UPC, image URL, net price, taxes, price, categories,
+        and tags.';
+    }
+
+    public static function longDescription(): string
+    {
+        return 'This resource generates random product data using Faker. It includes fields such as name, description,
+        EAN, UPC, image URL, net price, taxes, price, categories, and tags. The image URL is generated based on the
+        product name to ensure uniqueness.';
+    }
+
+    /**
      * Transform the resource into an array.
      *
      * @param Request $request

@@ -10,6 +10,25 @@ use Symfony\Component\Intl\Locales;
 class AddressResource extends BaseResource
 {
     /**
+     * A description of the resource used for the documentation page of this resource.
+     *
+     * @return string
+     */
+    public static function description(): string
+    {
+        return '
+            Generates random addresses with street, house number, city, state, region, postcode, country, county code,
+            latitude, and longitude.';
+    }
+
+    public static function longDescription(): string
+    {
+        return '
+            This resource generates random addresses using Faker. It includes fields such as street, house number,
+            city, state, region, postcode, country, county code, latitude, and longitude. The country can be specified
+            using the `country` parameter, and the locale can be set using the `locale` parameter.';
+    }
+    /**
      * Transform the resource into an array.
      *
      * @param Request $request

@@ -7,6 +7,24 @@ use Illuminate\Support\Str;
 
 class UserResource extends BaseResource
 {
+    /**
+     * A description of the resource used for the documentation page of this resource.
+     *
+     * @return string
+     */
+    public static function description(): string
+    {
+        return 'Generates random user profiles with first name, last name, username, password, email, IP address, MAC
+        address, website, and image URL.';
+    }
+
+    public static function longDescription(): string
+    {
+        return 'This resource generates random user data using Faker. It includes fields such as first name, last name,
+        username, password, email, IP address, MAC address, website, and image URL.
+        The image URL is generated based on the first and last name to ensure uniqueness.';
+    }
+
     protected $genders = ['male', 'female', 'other'];
 
     /**

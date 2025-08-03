@@ -8,6 +8,24 @@ use Illuminate\Support\Str;
 class BookResource extends BaseResource
 {
     /**
+     * A description of the resource used for the documentation page of this resource.
+     *
+     * @return string
+     */
+    public static function description(): string
+    {
+        return 'Generates random books with title, author, genre, description, ISBN, image URL, published date, and
+        publisher.';
+    }
+
+    public static function longDescription(): string
+    {
+        return 'This resource generates random book data using Faker. It includes fields such as title, author, genre,
+        description, ISBN, image URL, published date, and publisher. The image URL is generated based on the title to
+        ensure uniqueness.';
+    }
+
+    /**
      * Transform the resource into an array.
      *
      * @param Request $request
