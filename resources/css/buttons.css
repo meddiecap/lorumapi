@@ -1,0 +1,38 @@
+.btn {
+    @apply inline-flex items-center font-medium rounded-md focus-visible:outline-2 focus-visible:outline-offset-2 transition;
+}
+
+/* Variants */
+.btn-primary {
+    @apply text-white bg-indigo-600 hover:bg-indigo-500 border border-transparent shadow-xs focus-visible:outline-indigo-600;
+}
+
+.btn-secondary {
+    @apply text-indigo-600 bg-white hover:bg-gray-50 border border-transparent focus:ring-indigo-500;
+}
+
+
+.btn-arrow {
+    @apply text-gray-900 font-semibold;
+
+    & > svg {
+        @apply transition-transform duration-200;
+    }
+
+    &:hover > svg {
+        @apply translate-x-1;
+    }
+}
+
+/* Sizes */
+.btn-small {
+    @apply px-2.5 py-1 text-xs;
+}
+
+.btn-normal {
+    @apply px-3 py-2 text-sm;
+}
+
+.btn-large {
+    @apply px-3.5 py-2.5 text-sm;
+}
