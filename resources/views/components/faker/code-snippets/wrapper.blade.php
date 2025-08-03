@@ -19,7 +19,6 @@
     </div>
 
     <div class="p-1 overflow-x-auto text-xs leading-4">
-
         @foreach($languages as $language => $langTitle)
             <pre data-language="{{ $language }}" class="language-{{ $language }}"><code>@yield($language . '-code-snippet')</code></pre>
         @endforeach
