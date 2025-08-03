@@ -1,6 +1,6 @@
 <div id="basic-usage" class="pt-header flex flex-col gap-8 w-full">
     <h2 class="text-3xl font-semibold text-primary">
-        Basic usage <a href="/#basic-usage" class="text-xl">#</a>
+        Basic usage
     </h2>
     <div class="flex flex-row gap-12">
         <div class="flex flex-col gap-8 w-1/2">
@@ -18,57 +18,14 @@
                 application.
             </p>
             <h3 class="text-2xl font-semibold text-primary">
-                Optional attributes
+                Common attributes
             </h3>
-            <ul role="list"
-                class="m-0 max-w-[calc(var(--container-lg)-(--spacing(8)))] list-none divide-y divide-zinc-900/5 p-0 dark:divide-white/5">
-                @foreach($optionalParameters as $parameter)
-                    <li class="m-0 px-0 py-8 first:pt-0 last:pb-0">
-                        <dl class="m-0 flex flex-wrap items-center gap-x-3 gap-y-4">
-                            <dt class="sr-only">Name</dt>
-                            <dd><code class="language-json hljs-inline-block">{{ $parameter['name'] }}</code></dd>
-                            <dt class="sr-only">Type</dt>
-                            <dd class="font-mono text-xs text-zinc-400 dark:text-zinc-500">{{ $parameter['type'] }}</dd>
-                            <dt class="sr-only">Description</dt>
-                            <dd class="w-full flex-none [&amp;>:first-child]:mt-0 [&amp;>:last-child]:mb-0">
-                                <p>{{ $parameter['description'] }}</p>
-                            </dd>
-                        </dl>
-                    </li>
-                @endforeach
-            </ul>
+
+            <x-faker.api-parameter-list :parameters="$commonParameters" />
         </div>
         <div class="w-1/2">
             <x-code-block title="Sample request" name="sample-request" />
-            <x-code-block-simple title="Sample response">
-{
-    "status": "OK",
-    "code": 200,
-    "params": {
-        "quantity": 10,
-        "locale": "en_US",
-        "seed": 123,
-        "gender": null
-    },
-    "total": 10,
-    "data": [
-        {
-            "id": 1,
-            "street": "6029 Williamson Pine Apt. 587",
-            "street_name": "Haley Well",
-            "building_number": "988",
-            "city": "Johnshaven",
-            "postcode": "55061-7256",
-            "country": "Micronesia",
-            "county_code": "LY",
-            "latitude": 22.992011,
-            "longitude": -139.427909
-        },
-        // ...
-    ]
-}
-            </x-code-block-simple>
+            <x-code-block-simple title="Sample response" name="sample-response" lang="json" />
         </div>
     </div>
-
 </div>

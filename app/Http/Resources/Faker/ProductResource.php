@@ -70,9 +70,9 @@ class ProductResource extends BaseResource
             'upc'           => $this->faker->regexify('[0-9]{12}'),
             'image'         => 'https://picsum.photos/seed/' . Str::slug($productName) . '/640/480',
             'images'        => [
-                (new ImageResource($request, $this->faker))->resolve(),
-                (new ImageResource($request, $this->faker))->resolve(),
-                (new ImageResource($request, $this->faker))->resolve()
+                (new ImageResource($request, $this->faker, $this->params))->resolve(),
+                (new ImageResource($request, $this->faker, $this->params))->resolve(),
+                (new ImageResource($request, $this->faker, $this->params))->resolve()
             ],
             'net_price' => $netPrice,
             'taxes' => $taxes,

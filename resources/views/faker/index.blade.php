@@ -13,11 +13,8 @@
                     This is the official Lorum API site, and it's completely free to use.
                 </p>
                 <div class="mt-10 flex items-center gap-x-6">
-                    <a href="#"
-                       class="rounded-md bg-indigo-600 px-3.5 py-2.5 text-sm font-semibold text-white shadow-xs hover:bg-indigo-500 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">Get
-                        started</a>
-                    <a href="#" class="text-sm/6 font-semibold text-gray-900">Learn more <span
-                            aria-hidden="true">→</span></a>
+                    <x-ui.button  type="primary" size="large" :url="route('documentation')">Get started</x-ui.button>
+                    <x-ui.button  type="arrow" size="large" url="#">Learn more</x-ui.button>
                 </div>
             </div>
             <div
@@ -36,6 +33,23 @@
     </div>
 
     <div class="mx-auto max-w-7xl px-6 pt-10 pb-24 sm:pb-32 lg:flex lg:px-8 lg:py-40">
-        <x-faker.basic-usage :optionalParameters="$optionalParameters"/>
+        <x-faker.basic-usage :commonParameters="$commonParameters"/>
+    </div>
+
+    <div class="mx-auto max-w-7xl px-6 pt-10 pb-24 sm:pb-32 lg:px-8 lg:py-40">
+        <h2 class="text-3xl font-semibold text-primary">Available resources</h2>
+
+        <div class="grid grid-cols-2 gap-4 sm:grid-cols-3 pt-10">
+            @foreach($fakerResources as $fakerResource)
+                <a href="{{ $fakerResource['url'] }}" class="flex flex-col space-x-3 rounded-lg border border-gray-300 bg-white px-6 py-5 shadow-xs focus-within:ring-2 focus-within:ring-indigo-500 focus-within:ring-offset-2 hover:border-gray-400">
+                    <h3 class="text-base font-semibold text-gray-900">
+                        <!-- Extend touch target to entire panel -->
+                        <span aria-hidden="true" class="absolute inset-0"></span>
+                        {{ $fakerResource['name'] }}
+                    </h3>
+                    <p class="mt-2 text-sm text-gray-500">{{ $fakerResource['description'] }}</p>
+                </a>
+            @endforeach
+        </div>
     </div>
 @endsection

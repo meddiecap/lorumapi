@@ -4,8 +4,6 @@ namespace App\Http\Resources\Faker;
 
 use Illuminate\Http\Request;
 use Symfony\Component\Intl\Countries;
-use Symfony\Component\Intl\Languages;
-use Symfony\Component\Intl\Locales;
 
 class AddressResource extends BaseResource
 {
@@ -28,6 +26,27 @@ class AddressResource extends BaseResource
             city, state, region, postcode, country, county code, latitude, and longitude. The country can be specified
             using the `country` parameter, and the locale can be set using the `locale` parameter.';
     }
+
+    public static function availableParams(): array
+    {
+        $params = parent::availableParams();
+
+        return array_merge($params, [
+            'country' => [
+                'name' => 'country',
+                'type' => 'string',
+                'description' => 'The country code (ISO 3166-1 alpha-2) to generate the address for.',
+                'example' => 'US',
+            ],
+            'locale' => [
+                'name' => 'locale',
+                'type' => 'string',
+                'description' => 'The locale to use for generating the address.',
+                'example' => 'en_US',
+            ],
+        ]);
+    }
+
     /**
      * Transform the resource into an array.
      *
@@ -36,16 +55,17 @@ class AddressResource extends BaseResource
      */
     public function toArray(Request $request): array
     {
-//        $language = Languages::getName($this->params['locale']);
-//        $locale = Locales::getName($this->params['locale']);
-//        $country = Countries::getName('GB', 'de');
-//        dd($language, $locale);
+        $countries = $this->getCountries();
+
+        $streetName = $this->faker->streetName();
+        $houseNumber = $this->faker->numberBetween(1, 200);
+        $country = $this->faker->randomElement($countries);
 
         $output = [
             'id'                => $this->counter,
-            'street'            => $this->faker->streetAddress(),
-            'street_name'       => $this->faker->streetName(),
-            'house_number'      => $this->faker->buildingNumber(),
+            'street'            => $streetName . ' ' . $houseNumber,
+            'street_name'       => $streetName,
+            'house_number'      => $houseNumber,
             'building_number'   => $this->faker->buildingNumber(),
             'city'              => $this->faker->city(),
         ];
@@ -61,20 +81,14 @@ class AddressResource extends BaseResource
         }
 
         if (isset($this->params['country']) && $this->params['country'] !== null) {
-            $countries = Countries::getNames($this->params['locale']);
-            $countryName = Countries::getName($this->params['country'], $this->params['locale']);
-            $countryLocalName = Countries::getName($this->params['country']);
-            dd($this->params['locale'], $countryName, $countryLocalName);
-            $countryCode = $this->faker->countryCode($this->params['country']);
-        } else {
-            $country = $this->faker->country();
-            $countryCode = $this->faker->countryCode();
+            $country['name'] = Countries::getName($this->params['country'], $this->params['locale']);
+            $country['code'] = $this->params['country'];
         }
 
         return array_merge($output, [
             'postcode'          => $this->faker->postcode(),
-            'country'           => $country,
-            'county_code'       => $countryCode,
+            'country'           => $country['name'],
+            'county_code'       => $country['code'],
             'latitude'          => $this->faker->latitude(),
             'longitude'         => $this->faker->longitude()
         ]);

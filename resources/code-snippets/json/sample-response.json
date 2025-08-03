@@ -1,0 +1,25 @@
+{
+    "status": "OK",
+    "code": 200,
+    "params": {
+        "quantity": 10,
+        "locale": "en_US",
+        "seed": 123
+    },
+    "total": 10,
+    "data": [
+        {
+            "id": 1,
+            "street": "6029 Williamson Pine Apt. 587",
+            "street_name": "Haley Well",
+            "building_number": "988",
+            "city": "Johnshaven",
+            "postcode": "55061-7256",
+            "country": "Micronesia",
+            "county_code": "LY",
+            "latitude": 22.992011,
+            "longitude": -139.427909
+        },
+        // ...
+    ]
+}

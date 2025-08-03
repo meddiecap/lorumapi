@@ -8,6 +8,6 @@
     </div>
 
     <div class="p-1 overflow-x-auto text-xs leading-4">
-        <pre data-language="{{ $lang }}" class="language-{{ $lang }}"><code>{{ $snippet }}</code></pre>
+        <pre data-language="json" class="language-json"><code>{{ $sampleResponse }}</code></pre>
     </div>
 </div>

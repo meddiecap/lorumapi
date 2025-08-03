@@ -49,7 +49,7 @@ class PersonResource extends BaseResource
             'phone'         => $this->faker->e164PhoneNumber(),
             'birthday'      => $this->faker->dateTimeBetween($birthdayStart, $birthdayEnd)->format('Y-m-d'),
             'gender'        => $gender,
-            'address'       => (new AddressResource($request, $this->faker))->resolve(),
+            'address'       => (new AddressResource($request, $this->faker, $this->params))->resolve(),
             'website'       => 'https://'.$this->faker->domainName(),
             'image'         => 'https://picsum.photos/seed/' . Str::slug($firstname . '-' . $lastname) . '/480/640',
         ];

@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers;
 
-use App\Facades\Faker;
 use App\Http\Resources\DirectorCollection;
 use App\Http\Resources\Json\DirectorResource;
 use App\Http\Resources\Json\GenreResource;
@@ -12,10 +11,7 @@ use App\Http\Resources\Json\MovieResource;
 use App\Models\Director;
 use App\Models\Genre;
 use App\Models\Movie;
-use Faker\Generator;
-use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\View\View;
-use Illuminate\Foundation\Application;
 use Illuminate\Http\Request;
 
 class HomeController extends Controller
@@ -105,39 +101,6 @@ class HomeController extends Controller
             'directorsCollection' => json_encode($directorsCollection->toArray($request), JSON_PRETTY_PRINT),
             'apiSpec' => $apiSpec,
             'endpoints' => $endpoints,
-        ]);
-    }
-
-    public function faker(): View
-    {
-        $optionalParameters = [
-            [
-                'name' => 'quantity',
-                'type' => 'integer',
-                'description' => 'Number of fake records to generate. Defaults to 10, maximum is 1000.',
-            ],
-            [
-                'name' => 'locale',
-                'type' => 'string',
-                'description' => 'The locale to use for generating fake data. Defaults to the application locale.',
-            ],
-            [
-                'name' => 'seed',
-                'type' => 'integer',
-                'description' => 'Seed value for reproducible results. If not provided, a random seed will be used.',
-            ],
-            [
-                'name' => 'gender',
-                'type' => 'string',
-                'description' => 'For users and people resources, you can specify the gender.',
-            ]
-        ];
-
-        $sampleData = '';
-
-        return view('faker', [
-            'optionalParameters' => $optionalParameters,
-            'fakerLocales' => Faker::getLocales(),
         ]);
     }
 }

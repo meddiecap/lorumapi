@@ -38,7 +38,7 @@ class CompanyResource extends BaseResource
         $addresses = [];
         $n_addresses = rand(1, 5);
         for ($i=0; $i < $n_addresses; $i++) {
-            $addresses[] = (new AddressResource($request, $this->faker))->resolve();
+            $addresses[] = new AddressResource($request, $this->faker, $this->params, $i+1)->resolve();
         }
 
         // Use company name as a seed for image generation
@@ -54,7 +54,7 @@ class CompanyResource extends BaseResource
             'addresses'     => $addresses,
             'website'       => 'https://'.$this->faker->domainName(),
             'image'         => 'https://picsum.photos/seed/' . Str::slug($name) . '/480/640',
-            'contact'       => (new PersonResource($request, $this->faker))->resolve(),
+            'contact'       => new PersonResource($request, $this->faker, $this->params, 1)->resolve(),
         ];
     }
 }

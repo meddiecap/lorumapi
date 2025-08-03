@@ -19,10 +19,10 @@
                     To get started, you can use any HTTP client like cURL, Postman, or Axios to make requests to the API endpoints.
                     No authentication is required for this demo API, making it perfect for quick prototyping and learning.
                 </p>
-                <x-code-block language="bash" title="Example cURL Request">
+                <x-code-block lang="bash" title="Example cURL Request">
 curl -X GET "{{ url('/api/movies') }}" -H "Accept: application/json"
                 </x-code-block>
-                <x-code-block language="javascript" title="Example JavaScript Request">
+                <x-code-block lang="javascript" title="Example JavaScript Request">
 // Using Fetch API
 fetch('{{ url('/api/movies') }}', {
   headers: {

@@ -84,7 +84,7 @@ class ApiController extends Controller
         if($params['seed']) $faker->seed($params['seed']);
 
         for ($i=0; $i < $params['quantity']; $i++) {
-            $results[] = (new $resource($request, $faker, $params, $i + 1))->resolve();
+            $results[] = new $resource($request, $faker, $params, $i + 1)->resolve();
         }
 
         return response()
