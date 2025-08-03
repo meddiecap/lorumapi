@@ -4,6 +4,12 @@ namespace App\Services;
 use Faker\Factory;
 use Faker\Generator as FakerGenerator;
 
+/**
+ * Class FakerManager
+ *
+ * This class manages the Faker generator and provides the getLocales method to retrieve available locales.
+ * It allows dynamic method calls to the Faker generator.
+ */
 class FakerManager
 {
     /** @var FakerGenerator */
