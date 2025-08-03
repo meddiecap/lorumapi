@@ -52,8 +52,6 @@ class CodeBlock extends Component
     protected function getExtension(string $lang): string
     {
         return match ($lang) {
-            'php' => 'php',
-            'js' => 'js',
             'bash' => 'sh',
             default => $lang,
         };
