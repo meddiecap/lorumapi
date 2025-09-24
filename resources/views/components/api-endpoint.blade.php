@@ -1,5 +1,9 @@
 @props(['method', 'endpoint', 'description', 'parameters' => [], 'response' => null])
 
+@php
+use Illuminate\Support\Str;
+@endphp
+
 <div {{ $attributes->merge(['class' => 'overflow-hidden bg-white dark:bg-gray-800 shadow-sm sm:rounded-lg mb-6']) }}>
     <div class="px-4 py-3 bg-gray-50 dark:bg-gray-700 border-b border-gray-200 dark:border-gray-600 flex items-center">
         <span class="inline-flex items-center px-2.5 py-0.5 rounded-md text-sm font-medium
