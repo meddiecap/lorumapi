@@ -1,6 +1,6 @@
 <div id="basic-usage" class="pt-header flex flex-col gap-8 w-full">
-    <h2 class="text-3xl font-semibold text-primary">
-        Basic usage
+    <h2 id="basic-usage" class="text-3xl font-semibold text-primary">
+        <span class="font-bold">{{ \App\Services\FakerResourceRegistry::resourceTitle($resource) }}</span>: Basic usage
     </h2>
 
     <div class="mx-auto w-full max-w-7xl grow lg:flex gap-8">

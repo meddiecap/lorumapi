@@ -6,6 +6,7 @@ namespace App\Http\Controllers;
 
 use App\Facades\Faker;
 use App\Http\Resources\Faker\BaseResource;
+use App\Models\FakerResource;
 use App\Services\FakerResourceRegistry;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\Request;
@@ -30,7 +31,6 @@ class FakerController extends Controller
 
     public function resource(Request $request, $resource)
     {
-        $resource = strtolower($resource);
         $fakerResources = FakerResourceRegistry::list();
         $availableParameters = $fakerResources[$resource]['class']::availableParams();
 
