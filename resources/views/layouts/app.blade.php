@@ -39,9 +39,6 @@
                         <a href="{{ route('home') }}" class="inline-flex items-center px-1 pt-1 border-b-2 nav-link home-link {{ request()->routeIs('home') ? 'border-indigo-500 text-gray-900 dark:text-white' : 'border-transparent text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300 hover:border-gray-300 dark:hover:border-gray-700' }}">
                             Home
                         </a>
-                        <a href="{{ route('documentation') }}" class="inline-flex items-center px-1 pt-1 border-b-2 nav-link docs-link {{ request()->routeIs('documentation') ? 'border-indigo-500 text-gray-900 dark:text-white' : 'border-transparent text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300 hover:border-gray-300 dark:hover:border-gray-700' }}">
-                            Documentation
-                        </a>
                         <a href="{{ url('faker') }}" class="inline-flex items-center px-1 pt-1 border-b-2 border-transparent text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300 hover:border-gray-300 dark:hover:border-gray-700">
                             Faker API
                         </a>
@@ -86,8 +83,8 @@
                 <a href="{{ route('home') }}" class="nav-link home-link {{ request()->routeIs('home') ? 'bg-indigo-50 dark:bg-indigo-900 border-indigo-500 text-indigo-700 dark:text-indigo-300' : 'border-transparent text-gray-500 dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-gray-700 hover:border-gray-300 dark:hover:border-gray-600 hover:text-gray-700 dark:hover:text-gray-300' }} block pl-3 pr-4 py-2 border-l-4 text-base font-medium">
                     Home
                 </a>
-                <a href="{{ route('documentation') }}" class="nav-link docs-link {{ request()->routeIs('documentation') ? 'bg-indigo-50 dark:bg-indigo-900 border-indigo-500 text-indigo-700 dark:text-indigo-300' : 'border-transparent text-gray-500 dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-gray-700 hover:border-gray-300 dark:hover:border-gray-600 hover:text-gray-700 dark:hover:text-gray-300' }} block pl-3 pr-4 py-2 border-l-4 text-base font-medium">
-                    Documentation
+                <a href="{{ url('faker') }}" class="border-transparent text-gray-500 dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-gray-700 hover:border-gray-300 dark:hover:border-gray-600 hover:text-gray-700 dark:hover:text-gray-300 block pl-3 pr-4 py-2 border-l-4 text-base font-medium">
+                    Faker API
                 </a>
                 <a href="{{ url('/api/movies') }}" target="_blank" class="border-transparent text-gray-500 dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-gray-700 hover:border-gray-300 dark:hover:border-gray-600 hover:text-gray-700 dark:hover:text-gray-300 block pl-3 pr-4 py-2 border-l-4 text-base font-medium">
                     Movies API
