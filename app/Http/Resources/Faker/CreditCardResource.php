@@ -7,6 +7,16 @@ use Illuminate\Http\Request;
 class CreditCardResource extends BaseResource
 {
     /**
+     * The title of the resource used for the documentation page of this resource.
+     *
+     * @return string
+     */
+    public static function title(): string
+    {
+        return 'Credit Cards';
+    }
+
+    /**
      * A description of the resource used for the documentation page of this resource.
      *
      * @return string
